@@ -5,7 +5,7 @@
  * Gets the tags for the current page 
  *
  * @category 	snippet
- * @version 	1.0.5
+ * @version 	1.0.6
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @internal	@properties
  * @internal	@modx_category Navigation
@@ -65,7 +65,10 @@
 *		Alternatively, supply a doc ID number, and it will
 * 		be converted to a path automagically.
 *
+* &idDitto = value &id Ditto on the page &path
+*
 ***************************************/
+
 
 /**
 * Set values for items that were not set in the
@@ -82,10 +85,11 @@ $format = isset($format) ? $format : 'a';
 $newline = isset($newline) ? $newline : '1';
 $path = isset($path) ? $path : '';
 $caseSensitive = isset($caseSensitive) ? $caseSensitive : 0;
+if (!empty($idDitto)) {$idDitto = $idDitto . '_';} else {$idDitto = '';}
 
 // If a numeric path is supplied, assume it is a modx page ID, so create a URL from it
 if (!empty($path) && is_numeric($path)) {
-	$path = $modx->makeUrl($path);	
+$path = $modx->makeUrl($path);
 }
 
 // Do we need to make the URL ampersands XHTML compatible?
@@ -103,13 +107,13 @@ $get_tags = isset($value) ? $value : implode($delimiter,$modx->getTemplateVarOut
 $tags = array();
 $tvarray = explode($delimiter, $get_tags);
 foreach ($tvarray as $tag) {
-	if (!empty($tag)) {
-		if ($caseSensitive) {
-			$tags[trim($tag)] = trim($tag);
-		} else {
-			$tags[strtolower(trim($tag))] = trim($tag);
-		}
-	}
+if (!empty($tag)) {
+if ($caseSensitive) {
+$tags[trim($tag)] = trim($tag);
+} else {
+$tags[strtolower(trim($tag))] = trim($tag);
+}
+}
 }
 $tvarray = array_values($tags);
 $cnt = count($tvarray);
@@ -118,16 +122,16 @@ $cnt = count($tvarray);
 * Build the URL
 */
 $url_seperator = (strpos($path, '?') === false)?'?':$amp;
-$doc_path = $path.$url_seperator.'tags=';
+$doc_path = $path.$url_seperator.$idDitto.'tags=';
 
 
 /**
 * Remove new lines if &newline is set to `0`.
 */
 if ($newline == '1'){
-	$nl = "\n";
+$nl = "\n";
 } else {
-	$nl = '';
+$nl = '';
 }
 
 /**
@@ -142,25 +146,25 @@ $link .= '<'.$element.' class="'.$style.'">'.$nl;
 */
 if ($format == 'a'){
 $link .= "$label";
-	for ($x=0;$x<$cnt;$x++) {
-		$url = urlencode(trim($tvarray[$x]));
-		$cnd_separator = ($x!=($cnt-1)) ? $separator : '';
-	   $link .= '<a href="'.$doc_path.strtolower($url).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.$nl;	
-	}
+for ($x=0;$x<$cnt;$x++) {
+$url = urlencode(trim($tvarray[$x]));
+$cnd_separator = ($x!=($cnt-1)) ? $separator : '';
+  $link .= '<a href="'.$doc_path.strtolower($url).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.$nl;
+}
 } else {
 
 /**
 * Otherwise genereate a series of list items with a hrefs if &format
 * is set to ordered or unordered list.
 */
-	$link .= '<'.$format.'>'.$nl;
-	$link .= '<li class="'.$style.'_label">'.$label.'</li>'.$nl;
-	for ($x=0;$x<$cnt;$x++) {
-		$url = urlencode(trim($tvarray[$x]));
-		$cnd_separator = ($x!=($cnt-1)) ? $separator : '';
-	   $link .= '<li><a href="'.$doc_path.strtolower($url).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.'</li>'.$nl;
-	}
-	$link .= '</'.$format.'>'.$nl;
+$link .= '<'.$format.'>'.$nl;
+$link .= '<li class="'.$style.'_label">'.$label.'</li>'.$nl;
+for ($x=0;$x<$cnt;$x++) {
+$url = urlencode(trim($tvarray[$x]));
+$cnd_separator = ($x!=($cnt-1)) ? $separator : '';
+  $link .= '<li><a href="'.$doc_path.strtolower($url).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.'</li>'.$nl;
+}
+$link .= '</'.$format.'>'.$nl;
 }
 
 /**
@@ -173,7 +177,7 @@ $link .= '</'.$element.'>'.$nl;
 * return nothing as to not disturb the page layout.
 */
 if ($tvarray['0'] == ''){
-	return;
+return;
 }else{
 
 /**
@@ -181,4 +185,3 @@ if ($tvarray['0'] == ''){
 */
 return $link;
 }
-?>
