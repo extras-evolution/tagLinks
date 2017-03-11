@@ -5,7 +5,7 @@
  * Gets the tags for the current page 
  *
  * @category 	snippet
- * @version 	1.0.7
+ * @version 	1.0.6
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @internal	@properties
  * @internal	@modx_category Navigation
@@ -17,9 +17,8 @@
 * @changes	  23-April-07: Trim all tags and url values to ensure page validitiy and compatibility with Ditto
 * 			  9-May-07: Allow for tv value to be passed to the snippet for performance when used within a looping snippet (e.g. Ditto)
 * 			  1.0.4: Allow a ModX Doc ID to be supplied as a path, instead of hard coding. Fixed error pointed out by Astronut on the forum regarding getTemplateVarOutput returning an array rather than a string 
-*			    1.0.5: Remove FAP parameter - using ModX API to generate the link takes care of this automatically. Respect Modx config value for XHTML URLs. Generate URLs better (use appropriate ? or &) - ncrossland
-*         1.0.7: If &caseSensitive=`1`, the tags are added to the URL without being lowercased 
-*
+*			  1.0.5: Remove FAP parameter - using ModX API to generate the link takes care of this automatically. Respect Modx config value for XHTML URLs. Generate URLs better (use appropriate ? or &) - ncrossland
+* 
 * Parameters:
 * &id = document id to get tags for. default is
 *       current document.  When using this in a
@@ -32,7 +31,7 @@
 * &value = value of the tv if it has already
 *		been retrieved
 *
-* &delimiter = delimiter used in the tv.
+* &delimeter = delimiter used in the tv.
 *       defaults to a comma ","
 *
 * &caseSensitive = remove tags that are the
@@ -150,7 +149,7 @@ $link .= "$label";
 for ($x=0;$x<$cnt;$x++) {
 $url = urlencode(trim($tvarray[$x]));
 $cnd_separator = ($x!=($cnt-1)) ? $separator : '';
-  $link .= '<a href="'.$doc_path.($caseSensitive ? $url : strtolower($url)).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.$nl;
+  $link .= '<a href="'.$doc_path.strtolower($url).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.$nl;
 }
 } else {
 
@@ -163,7 +162,7 @@ $link .= '<li class="'.$style.'_label">'.$label.'</li>'.$nl;
 for ($x=0;$x<$cnt;$x++) {
 $url = urlencode(trim($tvarray[$x]));
 $cnd_separator = ($x!=($cnt-1)) ? $separator : '';
-  $link .= '<li><a href="'.$doc_path.($caseSensitive ? $url : strtolower($url)).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.'</li>'.$nl;
+  $link .= '<li><a href="'.$doc_path.strtolower($url).'">'.trim($tvarray[$x]).'</a>'.$cnd_separator.'</li>'.$nl;
 }
 $link .= '</'.$format.'>'.$nl;
 }
