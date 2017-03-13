@@ -99,7 +99,7 @@ $amp = $modx->config['xhtml_urls'] == '1'?'&amp;':'&';
 * Get the tags from the TV the user supplied
 */
 if ($tv == '' && !isset($value)){return "No template variable for tags was declared.";}
-$get_tags = isset($value) ? $value : implode($delimiter,$modx->getTemplateVarOutput($idname=array($tv), $page_id, $published="1"));
+$get_tags = isset($value) ? $value : implode($delimiter,(array)$modx->getTemplateVarOutput($idname=array($tv), $page_id, $published="1"));
 
 /**
 * Make an array of all the tags associated with the specified document.
